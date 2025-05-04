@@ -1,18 +1,16 @@
 const Fastify = require('fastify');
-require('dotenv').config();
-
 const cors = require('@fastify/cors');
 const swagger = require('@fastify/swagger');
+require('dotenv').config();
 
 const fastify = Fastify({ logger: true });
 
-// ✅ CORS richtig konfigurieren inkl. Preflight
+// ✅ CORS-Konfiguration
 fastify.register(cors, {
-  origin: true, // alle Ursprünge erlauben
+  origin: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
-  preflightContinue: false,
-  optionsSuccessStatus: 204
+  credentials: false
 });
 
 // ✅ Swagger (optional)
@@ -32,10 +30,8 @@ fastify.register(swagger, {
 let items = [];
 let nextId = 1;
 
-// GET /items
 fastify.get('/items', async () => items);
 
-// POST /items
 fastify.post('/items', async (request, reply) => {
   const { name, quantity } = request.body;
   if (!name || typeof quantity !== 'number') {
@@ -51,14 +47,12 @@ fastify.post('/items', async (request, reply) => {
   return reply.code(201).send(newItem);
 });
 
-// GET /items/:itemId
 fastify.get('/items/:itemId', async (request, reply) => {
   const id = Number(request.params.itemId);
   const item = items.find(i => i.id === id);
   return item ? item : reply.code(404).send({ error: 'Item not found' });
 });
 
-// PUT /items/:itemId
 fastify.put('/items/:itemId', async (request, reply) => {
   const id = Number(request.params.itemId);
   const { name, quantity } = request.body;
@@ -69,7 +63,6 @@ fastify.put('/items/:itemId', async (request, reply) => {
   return item;
 });
 
-// DELETE /items/:itemId
 fastify.delete('/items/:itemId', async (request, reply) => {
   const id = Number(request.params.itemId);
   const index = items.findIndex(i => i.id === id);
@@ -78,7 +71,6 @@ fastify.delete('/items/:itemId', async (request, reply) => {
   return reply.code(204).send();
 });
 
-// Server starten
 const start = async () => {
   try {
     await fastify.listen({ port: process.env.PORT || 3000, host: '0.0.0.0' });

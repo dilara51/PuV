@@ -1,15 +1,14 @@
 {
-    "name": "shopping-app",
-    "forwardPorts": [3000, 3001],
-    "portsAttributes": {
-      "3000": {
-        "label": "Backend",
-        "onAutoForward": "openBrowser"
-      },
-      "3001": {
-        "label": "Frontend",
-        "onAutoForward": "openBrowser"
-      }
+  "name": "shopping-app",
+  "forwardPorts": [3000, 3001],
+  "portsAttributes": {
+    "3000": {
+      "label": "Backend",
+      "onAutoForward": "openBrowser"
+    },
+    "3001": {
+      "label": "Frontend",
+      "onAutoForward": "openBrowser"
     }
   }
-  
+}

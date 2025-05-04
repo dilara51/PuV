@@ -6,9 +6,7 @@ export default function Home() {
   const [name, setName] = useState('');
   const [quantity, setQuantity] = useState(1);
 
-  // const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL;
-const apiBaseUrl = "https://verbose-space-potato-rv49gjxwwrh59v6-3000.app.github.dev";
-
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     axios.get(`${apiBaseUrl}/items`)
@@ -22,8 +20,11 @@ const apiBaseUrl = "https://verbose-space-potato-rv49gjxwwrh59v6-3000.app.github
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("POST an:", `${apiBaseUrl}/items`);
-      await axios.post(`${apiBaseUrl}/items`, { name, quantity: Number(quantity) });
+      await axios.post(`${apiBaseUrl}/items`, {
+        name,
+        quantity: Number(quantity)
+      });
+
       setName('');
       setQuantity(1);
       const res = await axios.get(`${apiBaseUrl}/items`);
